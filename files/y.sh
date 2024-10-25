@@ -1,5 +1,13 @@
 #!/bin/bash
 
+
+
+if [[ -z "$DataDir" ]] 
+then
+    echo DataDir variable Not Set
+    exit 1
+fi
+
 function MakeBlocklistFolders {
     [[ ! -d "$DataDir/BlockLists" ]] && mkdir "$DataDir/BlockLists"
     [[ ! -f "$DataDir/BlockLists/Extensions.txt" ]] && echo -e "zipx\nlnk\nexe\nbat\nsh\arj" | tee "$DataDir/BlockLists/Extensions.txt" >/dev/null
@@ -11,12 +19,6 @@ function MakeBlocklistFolders {
     return
 }
 
-
-if [[ -z "$DataDir" ]] 
-then
-    echo DataDir variable Not Set
-    exit 1
-fi
 
 if [[ ! -f "$DataDir/y.config" ]]
 then    
