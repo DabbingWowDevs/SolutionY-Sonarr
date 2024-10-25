@@ -23,6 +23,7 @@ RUN rm -f           \
 
 
 RUN mkdir -p /opt
+RUN mkdir -p /opt/config
 #RUN chown 1000:1000 -R /opt
 
 
