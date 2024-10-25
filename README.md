@@ -24,7 +24,7 @@ docker run -d \
   --hostname solution-y-sonarr --name solution-y-sonarr \
   -v /DockerData/SolutionY/sonarr:/opt/config \
   -e CronSchedule="*/1 * * * *" \
-  ghcr.io/dabbingwowdevs/solution-y-sonarr:latest /opt/y.sh
+  ghcr.io/dabbingwowdevs/solution-y-sonarr:latest
 ```
 
 ### compose
