@@ -1,8 +1,25 @@
 #!/bin/bash
 
-[[ -z "$DataDir" ]] && DataDir=$(pwd)
-[[ ! -f "$DataDir/y.config" ]] && echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.50.92:8989/sonarr \nSonarrApiKey=apikey \nWaitTimeMin=10 \nDataDir=$(pwd)\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
+if [[ -z "$DataDir" ]] 
+then
+    echo DataDir variable Not Set
+    exit 1
+fi
+
+if [[ ! -f "$DataDir/y.config" ]]
+then    
+    echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.1.92:8989/sonarr \nSonarrApiKey=<apikey> \nWaitTimeMin=60 \nDataDir=$DataDir\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
+    echo Config files created, you should go change them now.
+    exit 1
+fi
+
 source $DataDir/y.config
+if [[ "$SonarrApiKey" == "<apikey>" ]]
+then    
+    echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.1.92:8989/sonarr \nSonarrApiKey=<apikey> \nWaitTimeMin=60 \nDataDir=$DataDir\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
+    echo Config files created, you should go change them now. (no apikey)
+    exit 1
+fi
 
 [[ ! -d "$DataDir/BlockLists" ]] && mkdir "$DataDir/BlockLists"
 [[ ! -f "$DataDir/BlockLists/Extensions.txt" ]] && echo -e "zipx\nlnk\nexe\nbat\nsh\arj" | tee "$DataDir/BlockLists/Extensions.txt" >/dev/null
