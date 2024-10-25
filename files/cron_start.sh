@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CronCommand="/bin/bash /SolutionY/y.sh"
+CronCommand="/bin/bash /opt/y.sh"
 
 
 
