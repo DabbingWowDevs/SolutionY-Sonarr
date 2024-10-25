@@ -8,7 +8,7 @@ on:
 env:
 #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe 
 
-  IMAGE_NAME: SolutionY-Sonarr           #### ChangeMe #### ChangeMe #### ChangeMe 
+  IMAGE_NAME: solution-y-sonarr           #### ChangeMe #### ChangeMe #### ChangeMe 
   
 #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe   
 
