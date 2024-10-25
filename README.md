@@ -15,7 +15,7 @@ this is a huge security risk; softwre that automatically (blindly) downloads fil
 
 
 ### so heres my quick and dirty solution i might clean up later
-By default, this will REDOWNLOAD and BLOCKLIST queue items that are 60 mins stale based on these (configurable) settings
+By default, this will REDOWNLOAD and BLOCKLIST queue items that are 60 mins stale based on these (configurable) settings, every 5 minutes.
 - Error messege: "The download is stalled with no connections"
 - Extensions: zipx, lnk, exe, bat, arj
 - status messege: "One or more episodes expected in this release were not imported or missing from the release"
