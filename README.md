@@ -6,6 +6,8 @@ idk if its unwillingness, a lack of ability, laziness or if **theyre being bough
 
 ## Blocklist Sonarr Downloads and automatically Redownload based on extensions  
 
+this is a huge security risk; softwre that automatically (blindly) download random extensions and wait for you to notice.
+
 (or by state, status, or error messege)
 
 
