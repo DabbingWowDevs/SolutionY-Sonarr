@@ -29,5 +29,16 @@ docker run -d \
 
 ### compose
 ```
-
+ services:
+  ...
+  sonarr
+  ...
+  solution-y-sonarr:
+    container_name: "solution-y-sonarr"
+    environment:
+      - "QueueCheckWaitInMinutes=5"
+      - "debug=0"
+    image: "ghcr.io/dabbingwowdevs/solution-y-sonarr:latest"
+    volumes:
+      - "/DockerData/SolutionY/sonarr:/opt/config"
 ```
