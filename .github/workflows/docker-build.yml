@@ -8,7 +8,7 @@ on:
 env:
 #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe 
 
-  IMAGE_NAME: docker-cron-template-unmodified           #### ChangeMe #### ChangeMe #### ChangeMe 
+  IMAGE_NAME: SolutionY-Sonarr           #### ChangeMe #### ChangeMe #### ChangeMe 
   
 #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe #### ChangeMe   
 
