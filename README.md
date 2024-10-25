@@ -10,9 +10,9 @@ idk if its unwillingness, a lack of ability, laziness or if **theyre being bough
 
 1) run the program to create initial config file
 ```
-docker run \
+docker run --rm \
   --hostname solution-y-sonarr --name solution-y-sonarr \
-  -v /Storage:/Storage \
+  -v /DataDir/SolutionY/sonarr:/opt/config \
   -e PUID=1000 \
   -e PUID=1000 \
   -e CronSchedule="0 22 * * *" \
