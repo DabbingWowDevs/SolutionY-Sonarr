@@ -1,7 +1,7 @@
 #!/bin/bash
 
 [[ -z "$DataDir" ]] && DataDir=$(pwd)
-[[ ! -f "$DataDir/y.config" ]] && echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.50.92:8989/sonarr \nSonarrApiKey=ccc657c8644a41cc9691a4cc63261435 \nWaitTimeMin=10 \nDataDir=$(pwd)\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
+[[ ! -f "$DataDir/y.config" ]] && echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.50.92:8989/sonarr \nSonarrApiKey=apikey \nWaitTimeMin=10 \nDataDir=$(pwd)\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
 source $DataDir/y.config
 
 [[ ! -d "$DataDir/BlockLists" ]] && mkdir "$DataDir/BlockLists"
