@@ -6,7 +6,7 @@ RUN echo 'debconf debconf/frontend select teletype' | debconf-set-selections
 
 RUN apt-get update
 RUN apt-get dist-upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" -y install cron sudo 
+RUN DEBIAN_FRONTEND=noninteractive apt -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" -y install cron sudo jq curl
 
 
 RUN apt-get clean
