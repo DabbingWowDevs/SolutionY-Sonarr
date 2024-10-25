@@ -8,6 +8,19 @@ idk if its unwillingness, a lack of ability, laziness or if **theyre being bough
 
 (or by state, status, or error messege)
 
+
+### so heres my quick and dirty solution i might clean up later
+By default, this will REDOWNLOAD and BLOCKLIST queue items that are 5 mins stale based on these (configurable) settings
+- Error messege: "The download is stalled with no connections"
+- Extensions: zipx, lnk, exe, bat, arj
+- status messege: "One or more episodes expected in this release were not imported or missing from the release"
+- status: "warning"
+- states: "importBlocked"
+
+you can configure in the config folder, the filters are line-separated. 
+
+[![Donate with PayPal](https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png)](https://www.paypal.com/donate/?business=5BN7SX9KFGS2U&no_recurring=0&item_name=feed+me?&currency_code=USD)
+
 ### Quickstart
 - run the program to create initial config files 
 ```
