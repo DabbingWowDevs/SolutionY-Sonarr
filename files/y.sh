@@ -1,5 +1,17 @@
 #!/bin/bash
 
+function MakeBlocklistFolders {
+    [[ ! -d "$DataDir/BlockLists" ]] && mkdir "$DataDir/BlockLists"
+    [[ ! -f "$DataDir/BlockLists/Extensions.txt" ]] && echo -e "zipx\nlnk\nexe\nbat\nsh\arj" | tee "$DataDir/BlockLists/Extensions.txt" >/dev/null
+    [[ ! -f "$DataDir/BlockLists/StatusMesseges.txt" ]] && echo -e "One or more episodes expected in this release were not imported or missing from the release" | tee "$DataDir/BlockLists/StatusMesseges.txt" >/dev/null
+    [[ ! -f "$DataDir/BlockLists/ErrorMesseges.txt" ]] && echo -e "The download is stalled with no connections" | tee "$DataDir/BlockLists/ErrorMesseges.txt" >/dev/null
+    [[ ! -f "$DataDir/BlockLists/Statuses.txt" ]] && echo -e "warning" | tee "$DataDir/BlockLists/Statuses.txt" >/dev/null
+    [[ ! -f "$DataDir/BlockLists/States.txt" ]] && echo -e "importBlocked" | tee "$DataDir/BlockLists/States.txt" >/dev/null
+
+    return
+}
+
+
 if [[ -z "$DataDir" ]] 
 then
     echo DataDir variable Not Set
@@ -9,6 +21,7 @@ fi
 if [[ ! -f "$DataDir/y.config" ]]
 then    
     echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.1.92:8989/sonarr \nSonarrApiKey=<apikey> \nWaitTimeMin=60 \nDataDir=$DataDir\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
+    MakeBlocklistFolders
     echo Config files created, you should go change them now.
     exit 1
 fi
@@ -21,12 +34,7 @@ then
     exit 1
 fi
 
-[[ ! -d "$DataDir/BlockLists" ]] && mkdir "$DataDir/BlockLists"
-[[ ! -f "$DataDir/BlockLists/Extensions.txt" ]] && echo -e "zipx\nlnk\nexe\nbat\nsh\arj" | tee "$DataDir/BlockLists/Extensions.txt" >/dev/null
-[[ ! -f "$DataDir/BlockLists/StatusMesseges.txt" ]] && echo -e "One or more episodes expected in this release were not imported or missing from the release" | tee "$DataDir/BlockLists/StatusMesseges.txt" >/dev/null
-[[ ! -f "$DataDir/BlockLists/ErrorMesseges.txt" ]] && echo -e "The download is stalled with no connections" | tee "$DataDir/BlockLists/ErrorMesseges.txt" >/dev/null
-[[ ! -f "$DataDir/BlockLists/Statuses.txt" ]] && echo -e "warning" | tee "$DataDir/BlockLists/Statuses.txt" >/dev/null
-[[ ! -f "$DataDir/BlockLists/States.txt" ]] && echo -e "importBlocked" | tee "$DataDir/BlockLists/States.txt" >/dev/null
+MakeBlocklistFolders
 
 QueueJsonRaw=$(curl -s "\
 $SonarrHost/api/v3/queue?page=1\
