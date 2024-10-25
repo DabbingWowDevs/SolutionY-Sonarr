@@ -10,7 +10,7 @@ idk if its unwillingness, a lack of ability, laziness or if **theyre being bough
 
 
 ### so heres my quick and dirty solution i might clean up later
-By default, this will REDOWNLOAD and BLOCKLIST queue items that are 5 mins stale based on these (configurable) settings
+By default, this will REDOWNLOAD and BLOCKLIST queue items that are 60 mins stale based on these (configurable) settings
 - Error messege: "The download is stalled with no connections"
 - Extensions: zipx, lnk, exe, bat, arj
 - status messege: "One or more episodes expected in this release were not imported or missing from the release"
