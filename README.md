@@ -7,14 +7,16 @@ idk if its unwillingness, a lack of ability, laziness or if **theyre being bough
 ## Blocklist Sonarr Downloads and automatically Redownload based on extensions 
 
 ### Quickstart
-
-1) run the program to create initial config file
+- Make a Directory for your config `mkdir -p /DockerData/SolutionY/sonarr`
+- run the program to create initial config file 
 ```
 docker run --rm \
   --hostname solution-y-sonarr --name solution-y-sonarr \
-  -v /DataDir/SolutionY/sonarr:/opt/config \
+  -v /DockerData/SolutionY/sonarr:/opt/config \
   -e PUID=1000 \
-  -e PUID=1000 \
-  -e CronSchedule="0 22 * * *" \
+  -e PGID=1000 \
+  -e CronSchedule="*/1 * * * *" \
   ghcr.io/dabbingwowdevs/solution-y-sonarr:latest /opt/y.sh
 ```
+- change host and apikey in /DockerData/SolutionY/sonarr/y.config
+
