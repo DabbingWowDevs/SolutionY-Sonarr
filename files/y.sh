@@ -30,8 +30,8 @@ fi
 source $DataDir/y.config
 if [[ "$SonarrApiKey" == "<apikey>" ]]
 then    
-    echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.1.92:8989/sonarr \nSonarrApiKey=<apikey> \nWaitTimeMin=60 \nDataDir=$DataDir\nquiet=0\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
-    echo Config files created, you should go change them now. (no apikey)
+    #echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.1.92:8989/sonarr \nSonarrApiKey=<apikey> \nWaitTimeMin=60 \nDataDir=$DataDir\nquiet=0\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
+    echo -e "Config files created, you should go change them now. (no apikey)"
     exit 1
 fi
 
