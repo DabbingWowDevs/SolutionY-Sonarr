@@ -12,18 +12,17 @@ idk if its unwillingness, a lack of ability, laziness or if **theyre being bough
 docker run --rm \
   --hostname solution-y-sonarr --name solution-y-sonarr \
   -v /DockerData/SolutionY/sonarr:/opt/config \
-  -e CronSchedule="*/1 * * * *" \
   ghcr.io/dabbingwowdevs/solution-y-sonarr:latest /opt/y.sh
 ```
 - fix permissions for your config `sudo chown -R $(id -u $(whoami)):$(id -g $(whoami)) /DockerData/SolutionY`
-- change host and apikey in /DockerData/SolutionY/sonarr/y.config
+- change host and apikey in /DockerData/SolutionY/sonarr/y.config (or whatever youve changed the path to)
 - run normally or add to compose
 ### runline
 ```
 docker run -d \
   --hostname solution-y-sonarr --name solution-y-sonarr \
   -v /DockerData/SolutionY/sonarr:/opt/config \
-  -e CronSchedule="*/1 * * * *" \
+  -e QueueCheckWaitInMinutes=5 \
   ghcr.io/dabbingwowdevs/solution-y-sonarr:latest
 ```
 
