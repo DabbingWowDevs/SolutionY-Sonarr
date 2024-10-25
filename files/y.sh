@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ -z "$DataDir" ]]  && DataDir=/opt/config
+[[ -z "$DataDir" ]] && DataDir=/opt/config
 [[ -z "$QueueCheckWaitInMinutes" ]] && QueueCheckWaitInMinutes=5
 
 function MakeBlocklistFolders {
@@ -45,7 +45,10 @@ do
     &protocol=torrent\
     &apikey=$SonarrApiKey\
     ")
+    
     [[ $debug -eq 1 ]] && echo -e "Raw Json: \n\n$QueueJsonRaw\n\n"
+    [[ -z "$QueueJsonRaw" ]] && exit 1
+    echo -e "$QueueJsonRaw" | jq '.' >/dev/null 2>&1 || exit 1
     QueueItemCount=$(echo -e "$QueueJsonRaw" | jq '.["totalRecords"]')
     [[ $debug -eq 1 ]] && echo -e "QueueItemCount: \n\n$QueueItemCount\n\n"
     
