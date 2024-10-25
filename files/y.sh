@@ -1,10 +1,9 @@
 #!/bin/bash
 
-[[ ! $quiet -eq 1 ]] && 
 
 if [[ -z "$DataDir" ]] 
 then
-    echo DataDir variable Not Set
+    [[ ! $quiet -eq 1 ]] && echo DataDir variable Not Set
     exit 1
 fi
 
