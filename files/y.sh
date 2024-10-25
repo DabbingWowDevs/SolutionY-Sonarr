@@ -24,6 +24,7 @@ fi
 
 source $DataDir/y.config
 [[ ! $quiet -eq 1 ]] && echo not quiet
+[[ $debug -eq 1 ]] && echo -e "Debug On"
 if [[ "$SonarrApiKey" == "apikey" ]]
 then    
     echo -e "Config files created, you should go change them now. (no apikey)"
@@ -31,8 +32,10 @@ then
 fi
 
 MakeBlocklistFolders
+echo loop start
 while true 
 do
+    echo looping...
     QueueJsonRaw=$(curl -s "\
     $SonarrHost/api/v3/queue?page=1\
     &pageSize=10\
@@ -42,10 +45,12 @@ do
     &protocol=torrent\
     &apikey=$SonarrApiKey\
     ")
-    
+    [[ $debug -eq 1 ]] && echo -e "Raw Json: \n\n$QueueJsonRaw\n\n"
     QueueItemCount=$(echo -e "$QueueJsonRaw" | jq '.["totalRecords"]')
+    [[ $debug -eq 1 ]] && echo -e "QueueItemCount: \n\n$QueueItemCount\n\n"
     
     function BlacklistQueueItem {
+        
         curl -X 'DELETE' "$SonarrHost/api/v3/queue/$2?removeFromClient=$removeFromClient&blocklist=$AddToBlocklist&skipRedownload=$skipRedownload&changeCategory=false&apikey=$SonarrApiKey" -H 'accept: */*'
         sleep 1
         return
