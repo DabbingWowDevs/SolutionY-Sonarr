@@ -1,43 +1,48 @@
 # Welcome to Solution Y for sonarr
 
-ive been waiting, patiently, for the sonarr devs to wise up and implement this, but after dozens of closed issues and the ignored pleas of user, after user, it seems this matter will not resolve itself. 
+After numerous discussions where mitigation was discussed with me, and solutions proposed that would accomadate my shitty trackers, I decided I would "write" (jippity - GPT) a script. FOSS isn't meant to have pull requests that improve software, but instead new repositories with hacky scripts that have READMEs that disrespect the entire FOSS project they rely on!
 
-idk if its unwillingness, a lack of ability, laziness or if **theyre being bought out by UseNet hosts and virus makers,** (sarcasm at how much energy theyve put into avoiding this feature) but the sonarr devs [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) a way to automatically blocklist files for torrent users based on failure or more importantly ...
+But I'm not just a script, with every script comes a monologue and compulsive committing to the README one line at a time. This is _completely_ necessary as a commit history of repeated "Update README.md" is the only way I can _REALLY_ let those pesky devoted FOSS developers who wont solve my problem for me know that I'm _SUPER_ mad! GRRR!!!
+
+I really can't understand how people working for free in their spare time, who I am trying to siphon donations off of would [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) something that can already be solved with the mechanisms they have in place! Can you believe that they don't cater to every single user and their beligerance! It's astounding isn't it?!
 
 ## Blocklist Sonarr Downloads and automatically Redownload based on extensions
 
 (or by state, status, or error messege)
 
-
-this is a huge security risk; softwre that automatically (blindly) downloads files with random extensions and wait for you to notice? c'mon.
-
-
-
+Because I am a huge security risk; softwre that automatically (blindly) downloads files I told it to (by adding shit trackers to it and telling it to download from them...wait is that blindly?) with random extensions the trackers I chose to use and monitor permit and I should be expected to use common sense and learn that I'm doing this to myself? c'mon.
 
 ### so heres my quick and dirty solution i might clean up later
+
 By default, this will REDOWNLOAD and BLOCKLIST queue items that are 60 mins stale based on these (configurable) settings, every 5 minutes.
-- Error messege: "The download is stalled with no connections"
-- Extensions: zipx, lnk, exe, bat, arj
-- status messege: "One or more episodes expected in this release were not imported or missing from the release"
-- status: "warning"
-- states: "importBlocked"
 
-you can configure in the config folder, the filters are line-separated. 
+-   Error messege: "The download is stalled with no connections"
+-   Extensions: zipx, lnk, exe, bat, arj
+-   status messege: "One or more episodes expected in this release were not imported or missing from the release"
+-   status: "warning"
+-   states: "importBlocked"
 
-[![Donate with PayPal](https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png)](https://www.paypal.com/donate/?business=5BN7SX9KFGS2U&no_recurring=0&item_name=feed+me?&currency_code=USD)
+you can configure in the config folder, the filters are line-separated.
+
+[Please consider donating to the project that gives this project a purpose.](https://sonarr.tv/donate)
 
 ### Quickstart
-- run the program to create initial config files 
+
+-   run the program to create initial config files
+
 ```
 docker run --rm \
   --name solution-y-sonarr \
   -v /DockerData/SolutionY/sonarr:/opt/config \
   ghcr.io/dabbingwowdevs/solution-y-sonarr:latest /opt/y.sh
 ```
-- fix permissions for your config `sudo chown -R $(id -u $(whoami)):$(id -g $(whoami)) /DockerData/SolutionY`
-- change apikey in /DockerData/SolutionY/sonarr/y.config (or whatever youve changed the path to)
-- run normally or add to compose
+
+-   fix permissions for your config `sudo chown -R $(id -u $(whoami)):$(id -g $(whoami)) /DockerData/SolutionY`
+-   change apikey in /DockerData/SolutionY/sonarr/y.config (or whatever youve changed the path to)
+-   run normally or add to compose
+
 ### runline
+
 ```
 docker run -d \
   --name solution-y-sonarr \
@@ -49,6 +54,7 @@ docker run -d \
 ```
 
 ### compose
+
 ```
  services:
   ...
