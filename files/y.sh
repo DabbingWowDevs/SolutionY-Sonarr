@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+[[ ! $quiet -eq 1 ]] && 
 
 if [[ -z "$DataDir" ]] 
 then
@@ -80,21 +80,21 @@ do
     NowEpoch=$(date +%s)
     SecSinceAdded=$(($NowEpoch - $AddedEpoch))
     MinSinceAdded=$(($SecSinceAdded / 60))
-    echo
-    echo -e "Title: $title\n  ID: $id\n  SeriesID: $seriesId\n  EpID: $episodeId\n  State: $trackedDownloadState\n  Status: $status\n  ErrorMessage: $errorMessage\n  StatusMesseges:"
+    [[ ! $quiet -eq 1 ]] && echo
+    [[ ! $quiet -eq 1 ]] && echo -e "Title: $title\n  ID: $id\n  SeriesID: $seriesId\n  EpID: $episodeId\n  State: $trackedDownloadState\n  Status: $status\n  ErrorMessage: $errorMessage\n  StatusMesseges:"
     if [[ ! -z "$StatusMessegesRaw" ]] 
     then
         StatusMessegesLines=$(echo $StatusMessegesRaw | jq '.["title"]';echo $StatusMessegesRaw | jq '.messages[]' )
         while IFS= read -r line || [[ -n $line ]]; do
-            echo -e "   $line"
+            [[ ! $quiet -eq 1 ]] && echo -e "   $line"
         done < <(printf '%s' "$StatusMessegesLines")
     fi
-    echo -e "  Added On: $added\n  Added On (epoch): $AddedEpoch\n  Seconds Since Added: $SecSinceAdded\n  Minutes Since Added: $MinSinceAdded"
+    [[ ! $quiet -eq 1 ]] && echo -e "  Added On: $added\n  Added On (epoch): $AddedEpoch\n  Seconds Since Added: $SecSinceAdded\n  Minutes Since Added: $MinSinceAdded"
     [[ $MinSinceAdded -gt $WaitTimeMin ]] && process=1 || process=0 
 
     if [[ $process -eq 1 ]] 
     then
-        echo -e "  Would process"
+        [[ ! $quiet -eq 1 ]] && echo -e "  Would process"
 
         found=0
 
@@ -108,7 +108,7 @@ do
                     check=$(echo -e "   $line" | grep -i -e "unsupported" -e "extension\:"| grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
                     if [[ $check -eq 1 ]] 
                     then
-                        echo -e "    found extension $Filter, would blacklist."
+                        [[ ! $quiet -eq 1 ]] && echo -e "    found extension $Filter, would blacklist."
                         found=1
                         blacklist=1
                         continue
@@ -129,7 +129,7 @@ do
                     check=$(echo -e "   $line" | grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
                     if [[ $check -eq 1 ]] 
                     then
-                        echo -e "    found StatusMessege Filter, would blacklist. ($Filter)"
+                        [[ ! $quiet -eq 1 ]] && echo -e "    found StatusMessege Filter, would blacklist. ($Filter)"
                         found=1
                         blacklist=1
                         continue
@@ -148,7 +148,7 @@ do
                 check=$(echo -e "   $errorMessage" | grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
                 if [[ $check -eq 1 ]] 
                 then
-                    echo -e "    found ErrorMessege Filter, would blacklist. ($Filter)"
+                    [[ ! $quiet -eq 1 ]] && echo -e "    found ErrorMessege Filter, would blacklist. ($Filter)"
                     found=1
                     blacklist=1
                 fi
@@ -165,7 +165,7 @@ do
                 check=$(echo -e "   $status" | grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
                 if [[ $check -eq 1 ]] 
                 then
-                    echo -e "    found status Filter, would blacklist. ($Filter)"
+                    [[ ! $quiet -eq 1 ]] && echo -e "    found status Filter, would blacklist. ($Filter)"
                     found=1
                     blacklist=1
                 fi
@@ -181,7 +181,7 @@ do
                 check=$(echo -e "   $trackedDownloadState" | grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
                 if [[ $check -eq 1 ]] 
                 then
-                    echo -e "    found state Filter, would blacklist. ($Filter)"
+                    [[ ! $quiet -eq 1 ]] && echo -e "    found state Filter, would blacklist. ($Filter)"
                     found=1
                     blacklist=1
                 fi
@@ -192,5 +192,5 @@ do
     fi
 
     [[ $blacklist -eq 1 ]] &&  BlacklistQueueItem "$title" "$id" 
-    echo  end 
+    [[ ! $quiet -eq 1 ]] && echo  end 
 done
