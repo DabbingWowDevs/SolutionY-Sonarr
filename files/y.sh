@@ -1,7 +1,6 @@
 #!/bin/bash
 
-env
-echo start
+source /opt/env
 
 if [[ -z "$DataDir" ]] 
 then
