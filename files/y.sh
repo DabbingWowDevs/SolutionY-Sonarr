@@ -46,6 +46,16 @@ echo loop start
 while true 
 do
     echo looping...
+    [[ $debug -eq 1 ]] && echo -e "\
+    $SonarrHost/api/v3/queue?page=1\
+    &pageSize=10\
+    &includeUnknownSeriesItems=false\
+    &includeSeries=false\
+    &includeEpisode=false\
+    &protocol=torrent\
+    &apikey=$SonarrApiKey\
+    "
+    
     QueueJsonRaw=$(curl -s "\
     $SonarrHost/api/v3/queue?page=1\
     &pageSize=10\
@@ -54,7 +64,7 @@ do
     &includeEpisode=false\
     &protocol=torrent\
     &apikey=$SonarrApiKey\
-    ")
+    " 2>&1)
     
     [[ $debug -eq 1 ]] && echo -e "Raw Json: \n\n$QueueJsonRaw\n\n"
     [[ -z "$QueueJsonRaw" ]] && exit 1
