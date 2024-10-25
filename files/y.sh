@@ -32,6 +32,7 @@ then
 fi
 MakeBlocklistFolders
 [[ $debug -eq 1 ]] && echo -e "gothere1"
+wget "$SonarrHost/api?apikey=$SonarrApiKey" -O- 2>&1
 BaseDirTest=$(wget "$SonarrHost/api?apikey=$SonarrApiKey" -O- 2>&1)
 [[ $debug -eq 1 ]] && echo -e "gothere2"
 if echo -e "$BaseDirTest" |grep "302 Found" >/dev/null 2>&1
