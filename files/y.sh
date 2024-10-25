@@ -16,7 +16,7 @@ function MakeBlocklistFolders {
 
 if [[ ! -f "$DataDir/y.config" ]]
 then    
-    echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.1.92:8989/sonarr \nSonarrApiKey=apikey \nWaitTimeMin=60 \nDataDir=$DataDir\nquiet=0\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
+    echo -e "#include port but not basedir or trailing slash\nSonarrHost=http://localhost:8989 \nSonarrApiKey=apikey \nWaitTimeMin=60 \nDataDir=$DataDir\nquiet=0\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
     MakeBlocklistFolders
     echo Config files created, you should go change them now.
     exit 1
@@ -30,8 +30,17 @@ then
     echo -e "Config files created, you should go change them now. (no apikey)"
     exit 1
 fi
-
 MakeBlocklistFolders
+
+BaseDirTest=$(wget "$SonarrHost/api?apikey=$SonarrApiKey" -O- 2>&1)
+if echo -e "$BaseDirTest" |grep "302 Found" >/dev/null 2>&1
+then
+        BaseDir=$(echo echo -e "$BaseDirTest" |grep "Location" | cut -d'/' -f2)
+fi
+echo basedir is $BaseDir
+[[ ! -z "" ]] && SonarrHost=$SonarrHost/$BaseDir
+
+
 echo loop start
 while true 
 do
