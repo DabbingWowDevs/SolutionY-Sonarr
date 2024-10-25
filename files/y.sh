@@ -1,5 +1,7 @@
 #!/bin/bash
 
+env
+echo start
 
 if [[ -z "$DataDir" ]] 
 then
