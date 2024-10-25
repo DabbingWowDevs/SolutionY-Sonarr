@@ -4,11 +4,14 @@ ive been waiting, patiently, for the sonarr devs to wise up and implement this, 
 
 idk if its unwillingness, a lack of ability, laziness or if **theyre being bought out by UseNet hosts and virus makers,** but the sonarr devs flat out refuse to even condifer implementing a way to automatically blocklist files for torrent users based on failure or more importantly ...
 
-## Blocklist Sonarr Downloads and automatically Redownload based on extensions  
+## Blocklist Sonarr Downloads and automatically Redownload based on extensions
+
+(or by state, status, or error messege)
+
 
 this is a huge security risk; softwre that automatically (blindly) download random extensions and wait for you to notice.
 
-(or by state, status, or error messege)
+
 
 
 ### so heres my quick and dirty solution i might clean up later
