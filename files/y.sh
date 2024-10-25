@@ -2,7 +2,8 @@
 
 [[ -z "$DataDir" ]] && DataDir=/opt/config
 [[ -z "$QueueCheckWaitInMinutes" ]] && QueueCheckWaitInMinutes=5
-
+QueueCheckWaitInMinutes=$(($QueueCheckWaitInMinutes * 60))
+[[ $debug -eq 1 ]] && echo QueueCheckWaitInMinutes=$QueueCheckWaitInMinutes
 function MakeBlocklistFolders {
     [[ ! -d "$DataDir/BlockLists" ]] && mkdir "$DataDir/BlockLists"
     [[ ! -f "$DataDir/BlockLists/Extensions.txt" ]] && echo -e "zipx\nlnk\nexe\nbat\nsh\arj" | tee "$DataDir/BlockLists/Extensions.txt" >/dev/null
