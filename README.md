@@ -2,7 +2,7 @@
 
 ive been waiting, patiently, for the sonarr devs to wise up and implement this, but after dozens of closed issues and the ignored pleas of user, after user, it seems this matter will not resolve itself. 
 
-idk if its unwillingness, a lack of ability, laziness or if **theyre being bought out by UseNet hosts and virus makers,** but the sonarr devs flat out refuse to even consider implementing a way to automatically blocklist files for torrent users based on failure or more importantly ...
+idk if its unwillingness, a lack of ability, laziness or if **theyre being bought out by UseNet hosts and virus makers,** (sarcasm at how much energy theyve put into avoiding this feature) but the sonarr devs flat out refuse to even consider implementing a way to automatically blocklist files for torrent users based on failure or more importantly ...
 
 ## Blocklist Sonarr Downloads and automatically Redownload based on extensions
 
