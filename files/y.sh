@@ -31,20 +31,16 @@ then
     exit 1
 fi
 MakeBlocklistFolders
-[[ $debug -eq 1 ]] && echo -e "gothere1"
-wget "$SonarrHost/api?apikey=$SonarrApiKey" -O- 2>&1
+
 BaseDirTest=$(wget "$SonarrHost/api?apikey=$SonarrApiKey" -O- 2>&1)
-[[ $debug -eq 1 ]] && echo -e "gothere2"
 if echo -e "$BaseDirTest" |grep "302 Found" >/dev/null 2>&1
 then
-        [[ $debug -eq 1 ]] && echo -e "gothere3"
         BaseDir=$(echo echo -e "$BaseDirTest" |grep "Location" | cut -d'/' -f2)
-        [[ $debug -eq 1 ]] && echo -e "gothere4"
 fi
 
 echo basedir is $BaseDir
-[[ ! -z "" ]] && SonarrHost=$SonarrHost/$BaseDir
-
+[[ ! -z "$BaseDir" ]] && SonarrHost=$SonarrHost/$BaseDir
+echo SonarrHost is $SonarrHost
 
 echo loop start
 while true 
