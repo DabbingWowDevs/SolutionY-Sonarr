@@ -29,6 +29,7 @@ then
 fi
 
 source $DataDir/y.config
+[[ ! $quiet -eq 1 ]] && echo not quiet
 if [[ "$SonarrApiKey" == "<apikey>" ]]
 then    
     #echo -e "#include port and base dir but not trailing slash\nSonarrHost=http://192.168.1.92:8989/sonarr \nSonarrApiKey=<apikey> \nWaitTimeMin=60 \nDataDir=$DataDir\nquiet=0\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
