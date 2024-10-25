@@ -4,7 +4,9 @@ ive been waiting, patiently, for the sonarr devs to wise up and implement this, 
 
 idk if its unwillingness, a lack of ability, laziness or if **theyre being bought out by UseNet hosts and virus makers,** but the sonarr devs flat out refuse to allow us to automatically blocklist files based on failure or more importantly ...
 
-## Blocklist Sonarr Downloads and automatically Redownload based on extensions 
+## Blocklist Sonarr Downloads and automatically Redownload based on extensions  
+
+(or by state, status, or error messege)
 
 ### Quickstart
 - run the program to create initial config files 
@@ -24,6 +26,7 @@ docker run -d \
   --network container:sonarr \
   -v /DockerData/SolutionY/sonarr:/opt/config \
   -e QueueCheckWaitInMinutes=5 \
+  -e quiet=1 \
   ghcr.io/dabbingwowdevs/solution-y-sonarr:latest
 ```
 
@@ -38,6 +41,7 @@ docker run -d \
     environment:
       - "QueueCheckWaitInMinutes=5"
       - "debug=0"
+      - "quiet=1"
     image: "ghcr.io/dabbingwowdevs/solution-y-sonarr:latest"
     volumes:
       - "/DockerData/SolutionY/sonarr:/opt/config"
