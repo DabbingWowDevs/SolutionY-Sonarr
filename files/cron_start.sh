@@ -9,7 +9,7 @@ CronCommand="/bin/bash /opt/y.sh"
 env >/opt/env
 if [ "$PUID" != "$PGID" ]; then
   groupadd -g $PGID
-  useradd --no-create-home --no-log-init -Uu $PUID --password $RANDOM dockercronjobworker
+  useradd --no-create-home --no-user-group --gid $PGID --no-log-init -Uu $PUID --password $RANDOM dockercronjobworker
 else
   useradd --no-create-home --no-log-init -Uu $PUID --password $RANDOM dockercronjobworker
 fi
