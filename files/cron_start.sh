@@ -1,15 +1,6 @@
 #!/bin/bash
 
-
-CronCommand="/usr/bin/env"
-
-
-
-
-
-
-
-
+CronCommand="/bin/bash /SolutionY/y.sh"
 
 
 
