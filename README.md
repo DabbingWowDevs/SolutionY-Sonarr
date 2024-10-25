@@ -9,7 +9,7 @@ idk if its unwillingness, a lack of ability, laziness or if **theyre being bough
 (or by state, status, or error messege)
 
 
-this is a huge security risk; softwre that automatically (blindly) download random extensions and wait for you to notice.
+this is a huge security risk; softwre that automatically (blindly) downloads files with random extensions and wait for you to notice? c'mon.
 
 
 
