@@ -55,6 +55,10 @@ docker run -d \
   sonarr
   ...
   solution-y-sonarr:
+    depends_on:
+      sonarr:
+        condition: service_started
+    network_mode: "service:sonarr"
     container_name: "solution-y-sonarr"
     environment:
       - "QueueCheckWaitInMinutes=5"
