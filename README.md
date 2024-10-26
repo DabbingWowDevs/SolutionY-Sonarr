@@ -5,9 +5,9 @@
 sonarr devs [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) this feature so i have for myself
 
 
-## Blocklist Sonarr Downloads and automatically Redownload based on extensions like zipx, lnk
+## Blocklist Sonarr Downloads based on extensions like zipx or lnk, and automatically Redownload
 
-(or by state, status, or error messege)
+(or filter by state, status, or error messege)
 
 made because sonarr is a huge security risk; softwre that automatically downloads files with random extensions and refuses to handle them afterwards. c'mon.
 
