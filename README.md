@@ -1,6 +1,6 @@
 # Welcome to Solution Y for sonarr
 
-< redacted out of a modicum of respect for >
+< redacted out of a modicum of respect for one person >
 
 they [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) this feature so i have for myself
 
