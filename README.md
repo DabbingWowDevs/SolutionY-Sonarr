@@ -27,6 +27,8 @@ By default, this will REDOWNLOAD and BLOCKLIST queue items that are 60 mins stal
 you can configure in the config folder, the filters are line-separated.
 
 [Please consider donating to the project that gives this project a purpose.](https://sonarr.tv/donate)
+^^ begging for money in my repo after refusing to assist their users
+
 
 ### Quickstart
 
