@@ -6,7 +6,7 @@ But I'm not just a script, with every script comes a monologue and compulsive co
 
 I really can't understand how people working for free in their spare time, who I am trying to siphon donations off of would [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) something that can already be solved with the mechanisms they have in place! Can you believe that they don't cater to every single user and their beligerance! It's astounding isn't it?!
 
-**Look how mad the prowlarr devs are ^^ they wrote that nad made a pull request because theyre so angy they got called out**
+## **Look how mad the prowlarr devs are ^^ they wrote that and made a pull request because theyre so angy they got called out**
 
 ## Blocklist Sonarr Downloads and automatically Redownload based on extensions
 
