@@ -30,7 +30,6 @@ you can configure in the config folder, the filters are line-separated.
 
 ^^ prowlarr devs begging for money in my repo after refusing to assist their users. clearly they need it more than me. 
 
-[or you can donate to me, the guy actually doing something about shitty downloads provided by indexers they allowed in prowlarr]()
 
 ### Quickstart
 
