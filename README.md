@@ -12,7 +12,7 @@ I really can't understand how people working for free in their spare time, who I
 
 (or by state, status, or error messege)
 
-Because sonarr is a huge security risk; softwre that automatically (blindly) downloads files I told it to (by adding shit trackers **made availible by prowlarr** to it and telling it to download from them...) with random extensions the trackers I chose to use because they were made availible by prowlarr. c'mon servarr devs.
+Because sonarr is a huge security risk; softwre that automatically (blindly) downloads files (from shit trackers **made availible by prowlarr**) with random extensions the trackers I chose to use because they were made availible by prowlarr. c'mon servarr devs.
 
 ### so heres my quick and dirty solution i might clean up later
 
