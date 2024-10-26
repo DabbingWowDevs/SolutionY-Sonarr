@@ -38,6 +38,7 @@ docker run --rm \
 
 -   fix permissions for your config `sudo chown -R $(id -u $(whoami)):$(id -g $(whoami)) /DockerData/SolutionY`
 -   change apikey in /DockerData/SolutionY/sonarr/y.config (or whatever youve changed the path to)
+-   if youre using docker, and leave the network mode `container:<sonar container` changing the host is not necessary, it will also auto-detect a configured basedir 
 -   run normally or add to compose
 
 ### runline
