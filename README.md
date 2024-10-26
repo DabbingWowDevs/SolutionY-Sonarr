@@ -71,3 +71,8 @@ docker run -d \
     volumes:
       - "/DockerData/SolutionY/sonarr:/opt/config"
 ```
+
+
+# similar projects
+- https://github.com/Feramance/qBitrr
+- https://github.com/ManiMatter/decluttarr
