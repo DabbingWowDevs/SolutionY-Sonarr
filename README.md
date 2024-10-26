@@ -5,7 +5,7 @@
 sonarr devs [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) this feature so i have for myself
 
 
-## Blocklist Sonarr Downloads and automatically Redownload based on extensions
+## Blocklist Sonarr Downloads and automatically Redownload based on extensions like zipx, lnk
 
 (or by state, status, or error messege)
 
