@@ -1,6 +1,6 @@
 # Welcome to Solution Y for sonarr
 
-After numerous discussions where mitigation was discussed with me, and solutions proposed that would accomadate my shitty trackers, I decided I would "write" (jippity - GPT) a script. FOSS isn't meant to have pull requests that improve software, but instead new repositories with hacky scripts that have READMEs that disrespect the entire FOSS project they rely on!
+After numerous discussions where mitigation was discussed with me, and solutions proposed that would accomadate ~~my~~ prowlarr's shitty trackers, I decided I would "write" (jippity - GPT) (lmao is that how you write sonarr?) a script. FOSS isn't meant to have pull requests that improve software, but instead new repositories with hacky scripts that have READMEs that disrespect the entire FOSS project they rely on!
 
 But I'm not just a script, with every script comes a monologue and compulsive committing to the README one line at a time. This is _completely_ necessary as a commit history of repeated "Update README.md" is the only way I can _REALLY_ let those pesky devoted FOSS developers who wont solve my problem for me know that I'm _SUPER_ mad! GRRR!!!
 
