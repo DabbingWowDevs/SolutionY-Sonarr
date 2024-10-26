@@ -6,11 +6,13 @@ But I'm not just a script, with every script comes a monologue and compulsive co
 
 I really can't understand how people working for free in their spare time, who I am trying to siphon donations off of would [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) something that can already be solved with the mechanisms they have in place! Can you believe that they don't cater to every single user and their beligerance! It's astounding isn't it?!
 
+Look how mad the prowlarr devs are ^^ they wrote that nad made a pull request because theyre so angy
+
 ## Blocklist Sonarr Downloads and automatically Redownload based on extensions
 
 (or by state, status, or error messege)
 
-Because I am a huge security risk; softwre that automatically (blindly) downloads files I told it to (by adding shit trackers to it and telling it to download from them...wait is that blindly?) with random extensions the trackers I chose to use and monitor permit and I should be expected to use common sense and learn that I'm doing this to myself? c'mon.
+Because sonarr is a huge security risk; softwre that automatically (blindly) downloads files I told it to (by adding shit trackers **made availible by prowlarr** to it and telling it to download from them...) with random extensions the trackers I chose to use because they were made availible by prowlarr. c'mon servarr devs.
 
 ### so heres my quick and dirty solution i might clean up later
 
