@@ -9,7 +9,7 @@
 
 (or filter by state, status, or error messege)
 
-made because sonarr devs [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) this feature which turns sonarr into a huge security risk; softwre that automatically downloads files with random extensions and refuses to handle them afterwards. c'mon.
+made because sonarr devs [flat out refuse to even consider implementing](https://github.com/Sonarr/Sonarr/issues/3709#issuecomment-640946646) this feature which turns sonarr into a huge security risk; software that automatically downloads files with random extensions and refuses to handle them afterwards. c'mon.
 
 also because [similar projects](https://github.com/DabbingWowDevs/SolutionY-Sonarr/blob/main/README.md#similar-projects) dont adress the specific issue of handling by file extension, and/or reqiure a lot of setup, or do more than needed for this specifc problem.
 
