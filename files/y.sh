@@ -35,7 +35,7 @@ MakeBlocklistFolders
 
 BaseDirTest=$(wget "$SonarrHost/api?apikey=$SonarrApiKey" -O- 2>&1)
 [[ $debug -eq 1 ]] && echo BaseDirTest=$BaseDirTest
-if echo -e "$BaseDirTest" |grep "302 Found" >/dev/null 2>&1
+if echo -e "$BaseDirTest" |grep "following" >/dev/null 2>&1 || echo -e "$BaseDirTest" |grep "Location" >/dev/null 2>&1 || echo -e "$BaseDirTest" |grep "Redirect" >/dev/null 2>&1
 then
         BaseDir=$(echo -e "$BaseDirTest" |grep "Location" | cut -d'/' -f2)
         [[ $debug -eq 1 ]] && echo BaseDir=$BaseDir
