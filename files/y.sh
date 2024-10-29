@@ -36,7 +36,8 @@ MakeBlocklistFolders
 BaseDirTest=$(wget "$SonarrHost/api?apikey=$SonarrApiKey" -O- 2>&1)
 if echo -e "$BaseDirTest" |grep "302 Found" >/dev/null 2>&1
 then
-        BaseDir=$(echo echo -e "$BaseDirTest" |grep "Location" | cut -d'/' -f2)
+        BaseDir=$(echo -e "$BaseDirTest" |grep "Location" | cut -d'/' -f2)
+        [[ $debug -eq 1 ]] && echo BaseDir=$BaseDir
 fi
 
 echo basedir is $BaseDir
