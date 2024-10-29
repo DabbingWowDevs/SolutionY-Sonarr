@@ -140,6 +140,18 @@ $SonarrHost/api/v3/queue?page=1\
                             continue
                         fi
                     done < <(printf '%s' "$StatusMessegesLines")
+                    
+                    while IFS= read -r line || [[ -n $line ]]; do
+                        #"No files found are eligible for import '.ext'"
+                        check=$(echo -e "   $line" | grep -i -e "No files found are eligible for import"| grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
+                        if [[ $check -eq 1 ]] 
+                        then
+                            [[ ! $quiet -eq 1 ]] && echo -e "    found extension $Filter, would blacklist."
+                            found=1
+                            blacklist=1
+                            continue
+                        fi
+                    done < <(printf '%s' "$StatusMessegesLines")
                 fi
                 [[ $found -eq 1 ]] && continue
             done <"$DataDir/BlockLists/Extensions.txt"
