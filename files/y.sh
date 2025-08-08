@@ -51,7 +51,7 @@ do
     echo looping...
 [[ $debug -eq 1 ]] && echo -e "\
 $SonarrHost/api/v3/queue?page=1\
-&pageSize=10\
+&pageSize=200\
 &includeUnknownSeriesItems=false\
 &includeSeries=false\
 &includeEpisode=false\
@@ -61,7 +61,7 @@ $SonarrHost/api/v3/queue?page=1\
 
 QueueJsonRaw=$(curl -s "\
 $SonarrHost/api/v3/queue?page=1\
-&pageSize=10\
+&pageSize=200\
 &includeUnknownSeriesItems=false\
 &includeSeries=false\
 &includeEpisode=false\
