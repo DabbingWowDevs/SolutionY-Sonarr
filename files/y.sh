@@ -11,6 +11,7 @@ function MakeBlocklistFolders {
     [[ ! -f "$DataDir/BlockLists/ErrorMesseges.txt" ]] && echo -e "The download is stalled with no connections" | tee "$DataDir/BlockLists/ErrorMesseges.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/Statuses.txt" ]] && echo -e "warning" | tee "$DataDir/BlockLists/Statuses.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/States.txt" ]] && echo -e "importBlocked" | tee "$DataDir/BlockLists/States.txt" >/dev/null
+    [[ ! -f "$DataDir/BlockLists/IgnoreClients.txt" ]] && echo -e "" | tee "$DataDir/BlockLists/IgnoreClients.txt" >/dev/null
 
     return
 }
@@ -92,6 +93,7 @@ $SonarrHost/api/v3/queue?page=1\
     
         episodeId=$(echo -e "$QueueJsonRaw" | jq '.["records"]['$QueueItemIndex'].episodeId')
         seriesId=$(echo -e "$QueueJsonRaw" | jq '.["records"]['$QueueItemIndex'].seriesId')
+        downloadClient=$(echo -e "$QueueJsonRaw" | jq -r '.["records"]['$QueueItemIndex'].downloadClient')
         #seasonNumber=$(echo -e "$QueueJsonRaw" | jq '.["records"]['$QueueItemIndex'].seasonNumber')
     
         status=$(echo -e "$QueueJsonRaw" | jq '.["records"]['$QueueItemIndex'].status')
@@ -107,7 +109,19 @@ $SonarrHost/api/v3/queue?page=1\
         SecSinceAdded=$(($NowEpoch - $AddedEpoch))
         MinSinceAdded=$(($SecSinceAdded / 60))
         [[ ! $quiet -eq 1 ]] && echo
-        [[ ! $quiet -eq 1 ]] && echo -e "Title: $title\n  ID: $id\n  SeriesID: $seriesId\n  EpID: $episodeId\n  State: $trackedDownloadState\n  Status: $status\n  ErrorMessage: $errorMessage\n  StatusMesseges:"
+        [[ ! $quiet -eq 1 ]] && echo -e "Title: $title\n  ID: $id\n  SeriesID: $seriesId\n  EpID: $episodeId\n  DownloadClient: $downloadClient\n  State: $trackedDownloadState\n  Status: $status\n  ErrorMessage: $errorMessage\n  StatusMesseges:"
+
+        # Skip items assigned to an ignored download client
+        ignoreClient=0
+        while IFS= read -r IgnoreFilter || [[ -n $IgnoreFilter ]]; do
+            [[ -z "$IgnoreFilter" ]] && continue
+            if echo -e "$downloadClient" | grep -qi "$IgnoreFilter"; then
+                [[ ! $quiet -eq 1 ]] && echo -e "  Skipping: download client '$downloadClient' matches ignore filter '$IgnoreFilter'"
+                ignoreClient=1
+                break
+            fi
+        done <"$DataDir/BlockLists/IgnoreClients.txt"
+        [[ $ignoreClient -eq 1 ]] && continue
         if [[ ! -z "$StatusMessegesRaw" ]] 
         then
             StatusMessegesLines=$(echo $StatusMessegesRaw | jq '.["title"]';echo $StatusMessegesRaw | jq '.messages[]' )
