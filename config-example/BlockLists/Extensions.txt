@@ -1,0 +1,11 @@
+zipx
+lnk
+exe
+bat
+arj
+lzh
+gz
+001
+scr
+iso
+rar

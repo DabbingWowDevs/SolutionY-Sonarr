@@ -1,0 +1,2 @@
+The download is stalled with no connections
+qBittorrent is downloading metadata
