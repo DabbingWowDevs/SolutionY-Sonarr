@@ -12,6 +12,7 @@ function MakeBlocklistFolders {
     [[ ! -f "$DataDir/BlockLists/Statuses.txt" ]] && echo -e "warning" | tee "$DataDir/BlockLists/Statuses.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/States.txt" ]] && echo -e "importBlocked" | tee "$DataDir/BlockLists/States.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/IgnoreClients.txt" ]] && echo -e "" | tee "$DataDir/BlockLists/IgnoreClients.txt" >/dev/null
+    [[ ! -f "$DataDir/BlockLists/IgnoreStates.txt" ]] && echo -e "importPending" | tee "$DataDir/BlockLists/IgnoreStates.txt" >/dev/null
 
     return
 }
@@ -122,6 +123,18 @@ $SonarrHost/api/v3/queue?page=1\
             fi
         done <"$DataDir/BlockLists/IgnoreClients.txt"
         [[ $ignoreClient -eq 1 ]] && continue
+
+        # Skip items in an ignored tracked download state (e.g. importPending = Manual Import Required)
+        ignoreState=0
+        while IFS= read -r IgnoreFilter || [[ -n $IgnoreFilter ]]; do
+            [[ -z "$IgnoreFilter" ]] && continue
+            if echo -e "$trackedDownloadState" | grep -qi "$IgnoreFilter"; then
+                [[ ! $quiet -eq 1 ]] && echo -e "  Skipping: state '$trackedDownloadState' matches ignore filter '$IgnoreFilter'"
+                ignoreState=1
+                break
+            fi
+        done <"$DataDir/BlockLists/IgnoreStates.txt"
+        [[ $ignoreState -eq 1 ]] && continue
         if [[ ! -z "$StatusMessegesRaw" ]] 
         then
             StatusMessegesLines=$(echo $StatusMessegesRaw | jq '.["title"]';echo $StatusMessegesRaw | jq '.messages[]' )
