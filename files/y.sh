@@ -7,18 +7,16 @@ QueueCheckWaitInMinutes=$(($QueueCheckWaitInMinutes * 60))
 
 function MakeBlocklistFolders {
     [[ ! -d "$DataDir/BlockLists" ]] && mkdir "$DataDir/BlockLists"
-    [[ ! -f "$DataDir/BlockLists/Extensions.txt" ]] && echo -e "zipx\nlnk\nexe\nbat\nsh\arj" | tee "$DataDir/BlockLists/Extensions.txt" >/dev/null
+    [[ ! -f "$DataDir/BlockLists/Extensions.txt" ]] && echo -e "zipx\nlnk\nexe\nbat\nsh\narj" | tee "$DataDir/BlockLists/Extensions.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/StatusMesseges.txt" ]] && echo -e "One or more episodes expected in this release were not imported or missing from the release" | tee "$DataDir/BlockLists/StatusMesseges.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/ErrorMesseges.txt" ]] && echo -e "The download is stalled with no connections" | tee "$DataDir/BlockLists/ErrorMesseges.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/Statuses.txt" ]] && echo -e "warning" | tee "$DataDir/BlockLists/Statuses.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/States.txt" ]] && echo -e "importBlocked" | tee "$DataDir/BlockLists/States.txt" >/dev/null
     [[ ! -f "$DataDir/BlockLists/IgnoreClients.txt" ]] && echo -e "" | tee "$DataDir/BlockLists/IgnoreClients.txt" >/dev/null
-
     return
 }
 
-if [[ ! -f "$DataDir/y.config" ]]
-then
+if [[ ! -f "$DataDir/y.config" ]]; then
     echo -e "#include port but not basedir or trailing slash\nSonarrHost=http://localhost:8989 \nSonarrApiKey=apikey \nWaitTimeMin=60 \nDataDir=$DataDir\nquiet=0\n\nremoveFromClient=true\nAddToBlocklist=true\nskipRedownload=false" | tee "$DataDir/y.config" >/dev/null
     MakeBlocklistFolders
     echo "[setup] Config files created at $DataDir — go set your API key and Sonarr host before running again."
@@ -29,8 +27,7 @@ source $DataDir/y.config
 [[ ! $quiet -eq 1 ]] && echo "[info] Verbose output enabled (quiet=0)"
 [[ $debug -eq 1 ]] && echo "[debug] Debug logging enabled"
 
-if [[ "$SonarrApiKey" == "apikey" ]]
-then
+if [[ "$SonarrApiKey" == "apikey" ]]; then
     echo "[error] API key is still set to the default placeholder. Edit $DataDir/y.config and set a real API key."
     exit 1
 fi
@@ -39,10 +36,9 @@ MakeBlocklistFolders
 [[ ! $quiet -eq 1 ]] && echo "[info] Probing Sonarr at $SonarrHost for base path..."
 BaseDirTest=$(wget "$SonarrHost/api?apikey=$SonarrApiKey" -O- 2>&1)
 [[ $debug -eq 1 ]] && echo "[debug] Base path probe response: $BaseDirTest"
-if echo -e "$BaseDirTest" |grep "following" >/dev/null 2>&1 || echo -e "$BaseDirTest" |grep "Location" >/dev/null 2>&1 || echo -e "$BaseDirTest" |grep "Redirect" >/dev/null 2>&1
-then
-        BaseDir=$(echo -e "$BaseDirTest" |grep "Location" | cut -d'/' -f2)
-        [[ $debug -eq 1 ]] && echo "[debug] Detected base path: /$BaseDir"
+if echo "$BaseDirTest" | grep -q "following\|Location\|Redirect"; then
+    BaseDir=$(echo "$BaseDirTest" | grep "Location" | cut -d'/' -f2)
+    [[ $debug -eq 1 ]] && echo "[debug] Detected base path: /$BaseDir"
 fi
 
 [[ ! $quiet -eq 1 ]] && echo "[info] Base path: ${BaseDir:-none (root)}"
@@ -50,29 +46,23 @@ fi
 [[ ! $quiet -eq 1 ]] && echo "[info] Sonarr endpoint: $SonarrHost"
 
 echo "[info] Starting queue monitor loop (check every $(($QueueCheckWaitInMinutes / 60)) min, act on items older than ${WaitTimeMin} min)"
-while true
-do
+
+while true; do
     [[ ! $quiet -eq 1 ]] && echo ""
     [[ ! $quiet -eq 1 ]] && echo "[poll] Fetching Sonarr queue..."
-[[ $debug -eq 1 ]] && echo "[debug] Request URL: $SonarrHost/api/v3/queue?page=1&pageSize=200&includeUnknownSeriesItems=false&includeSeries=false&includeEpisode=false&protocol=torrent&apikey=***"
+    [[ $debug -eq 1 ]] && echo "[debug] Request URL: $SonarrHost/api/v3/queue?page=1&pageSize=200&...&apikey=***"
 
-QueueJsonRaw=$(curl -s "\
-$SonarrHost/api/v3/queue?page=1\
-&pageSize=200\
-&includeUnknownSeriesItems=false\
-&includeSeries=false\
-&includeEpisode=false\
-&protocol=torrent\
-&apikey=$SonarrApiKey\
-" 2>&1)
+    QueueJsonRaw=$(curl -s "$SonarrHost/api/v3/queue?page=1&pageSize=200&includeUnknownSeriesItems=false&includeSeries=false&includeEpisode=false&protocol=torrent&apikey=$SonarrApiKey" 2>&1)
 
-    [[ $debug -eq 1 ]] && echo "[debug] Raw response:"$'\n'"$QueueJsonRaw"$'\n'
+    [[ $debug -eq 1 ]] && echo "[debug] Raw response:" && echo "$QueueJsonRaw" && echo ""
+
     if [[ -z "$QueueJsonRaw" ]]; then
         echo "[error] Got empty response from Sonarr — is it running and reachable?"
         exit 1
     fi
-    echo -e "$QueueJsonRaw" | jq '.' >/dev/null 2>&1 || { echo "[error] Sonarr returned non-JSON — check host/API key config."; exit 1; }
-    QueueItemCount=$(echo -e "$QueueJsonRaw" | jq '.[\"totalRecords\"]')
+    echo "$QueueJsonRaw" | jq '.' >/dev/null 2>&1 || { echo "[error] Sonarr returned non-JSON — check host/API key config."; exit 1; }
+
+    QueueItemCount=$(echo "$QueueJsonRaw" | jq '.totalRecords')
     [[ ! $quiet -eq 1 ]] && echo "[poll] $QueueItemCount item(s) in queue"
     [[ $debug -eq 1 ]] && echo "[debug] Total records: $QueueItemCount"
 
@@ -83,26 +73,19 @@ $SonarrHost/api/v3/queue?page=1\
         return
     }
 
-    for QueueItemIndex in  $(seq 0 $((${QueueItemCount}-1)))
-    do
+    for QueueItemIndex in $(seq 0 $((${QueueItemCount}-1))); do
         blacklist=0
 
-        title=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].title')
-
-        id=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].id')
-
-        episodeId=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].episodeId')
-        seriesId=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].seriesId')
-        downloadClient=$(echo -e "$QueueJsonRaw" | jq -r '.[\"records\"]['$QueueItemIndex'].downloadClient')
-        #seasonNumber=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].seasonNumber')
-
-        status=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].status')
-        trackedDownloadState=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].trackedDownloadState')
-        errorMessage=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].errorMessage')
-
-        StatusMessegesRaw=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].statusMessages[]')
-
-        added=$(echo -e "$QueueJsonRaw" | jq '.[\"records\"]['$QueueItemIndex'].added'|sed 's|\"||g')
+        title=$(echo "$QueueJsonRaw"            | jq -r ".records[$QueueItemIndex].title")
+        id=$(echo "$QueueJsonRaw"               | jq -r ".records[$QueueItemIndex].id")
+        episodeId=$(echo "$QueueJsonRaw"        | jq -r ".records[$QueueItemIndex].episodeId")
+        seriesId=$(echo "$QueueJsonRaw"         | jq -r ".records[$QueueItemIndex].seriesId")
+        downloadClient=$(echo "$QueueJsonRaw"   | jq -r ".records[$QueueItemIndex].downloadClient")
+        status=$(echo "$QueueJsonRaw"           | jq -r ".records[$QueueItemIndex].status")
+        trackedDownloadState=$(echo "$QueueJsonRaw" | jq -r ".records[$QueueItemIndex].trackedDownloadState")
+        errorMessage=$(echo "$QueueJsonRaw"     | jq -r ".records[$QueueItemIndex].errorMessage")
+        added=$(echo "$QueueJsonRaw"            | jq -r ".records[$QueueItemIndex].added")
+        StatusMessegesRaw=$(echo "$QueueJsonRaw" | jq -c ".records[$QueueItemIndex].statusMessages[]?" 2>/dev/null)
 
         AddedEpoch=$(date -d"$added" +%s)
         NowEpoch=$(date +%s)
@@ -119,10 +102,13 @@ $SonarrHost/api/v3/queue?page=1\
             echo "  │  age=${MinSinceAdded}min (added $added)"
             if [[ ! -z "$StatusMessegesRaw" ]]; then
                 echo "  │  status messages:"
-                StatusMessegesLines=$(echo $StatusMessegesRaw | jq '.[\"title\"]';echo $StatusMessegesRaw | jq '.messages[]')
-                while IFS= read -r line || [[ -n $line ]]; do
-                    echo "  │    $line"
-                done < <(printf '%s' "$StatusMessegesLines")
+                while IFS= read -r msgobj; do
+                    msgtitle=$(echo "$msgobj" | jq -r '.title')
+                    echo "  │    $msgtitle"
+                    echo "$msgobj" | jq -r '.messages[]?' | while IFS= read -r m; do
+                        echo "  │      $m"
+                    done
+                done < <(printf '%s\n' "$StatusMessegesRaw")
             fi
         fi
 
@@ -130,7 +116,7 @@ $SonarrHost/api/v3/queue?page=1\
         ignoreClient=0
         while IFS= read -r IgnoreFilter || [[ -n $IgnoreFilter ]]; do
             [[ -z "$IgnoreFilter" ]] && continue
-            if echo -e "$downloadClient" | grep -qi "$IgnoreFilter"; then
+            if echo "$downloadClient" | grep -qi "$IgnoreFilter"; then
                 [[ ! $quiet -eq 1 ]] && echo "  └─ [skip] Client '$downloadClient' is in IgnoreClients.txt — skipping"
                 ignoreClient=1
                 break
@@ -138,13 +124,7 @@ $SonarrHost/api/v3/queue?page=1\
         done <"$DataDir/BlockLists/IgnoreClients.txt"
         [[ $ignoreClient -eq 1 ]] && continue
 
-        if [[ ! -z "$StatusMessegesRaw" ]] && [[ $quiet -eq 1 ]]
-        then
-            StatusMessegesLines=$(echo $StatusMessegesRaw | jq '.[\"title\"]';echo $StatusMessegesRaw | jq '.messages[]' )
-        fi
-        [[ $MinSinceAdded -gt $WaitTimeMin ]] && process=1 || process=0
-
-        if [[ $process -eq 0 ]]; then
+        if [[ $MinSinceAdded -le $WaitTimeMin ]]; then
             [[ ! $quiet -eq 1 ]] && echo "  └─ [skip] Only ${MinSinceAdded}min old — below ${WaitTimeMin}min threshold"
             continue
         fi
@@ -153,96 +133,75 @@ $SonarrHost/api/v3/queue?page=1\
 
         found=0
 
+        # Extensions filter
         while IFS= read -r Filter || [[ -n $Filter ]]; do
-            if [[ ! -z "$StatusMessegesRaw" ]]
-            then
-                StatusMessegesLines=$(echo $StatusMessegesRaw | jq '.[\"title\"]';echo $StatusMessegesRaw | jq '.messages[]' )
-                while IFS= read -r line || [[ -n $line ]]; do
-                    #"Invalid video file, unsupported extension: '.ext'"
-                    check=$(echo -e "   $line" | grep -i -e "unsupported" -e "extension\:"| grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
-                    if [[ $check -eq 1 ]]
-                    then
-                        [[ ! $quiet -eq 1 ]] && echo "  │  [match] Blocked extension '$Filter' found in status messages"
-                        found=1
-                        blacklist=1
-                        continue
-                    fi
-                done < <(printf '%s' "$StatusMessegesLines")
-
-                while IFS= read -r line || [[ -n $line ]]; do
-                    #"No files found are eligible for import '.ext'"
-                    check=$(echo -e "   $line" | grep -i -e "No files found are eligible for import"| grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
-                    if [[ $check -eq 1 ]]
-                    then
-                        [[ ! $quiet -eq 1 ]] && echo "  │  [match] Blocked extension '$Filter' found in 'no eligible files' message"
-                        found=1
-                        blacklist=1
-                        continue
-                    fi
-                done < <(printf '%s' "$StatusMessegesLines")
+            [[ -z "$Filter" ]] && continue
+            if [[ ! -z "$StatusMessegesRaw" ]]; then
+                while IFS= read -r msgobj; do
+                    StatusMessegesLines=$(echo "$msgobj" | jq -r '.title, (.messages[]? // empty)')
+                    while IFS= read -r line || [[ -n $line ]]; do
+                        if echo "$line" | grep -qi -e "unsupported" -e "extension:" && echo "$line" | grep -qi "$Filter"; then
+                            [[ ! $quiet -eq 1 ]] && echo "  │  [match] Blocked extension '$Filter' found in status messages"
+                            found=1; blacklist=1
+                        fi
+                        if echo "$line" | grep -qi "No files found are eligible for import" && echo "$line" | grep -qi "$Filter"; then
+                            [[ ! $quiet -eq 1 ]] && echo "  │  [match] Blocked extension '$Filter' found in 'no eligible files' message"
+                            found=1; blacklist=1
+                        fi
+                    done < <(printf '%s\n' "$StatusMessegesLines")
+                done < <(printf '%s\n' "$StatusMessegesRaw")
             fi
             [[ $found -eq 1 ]] && continue
         done <"$DataDir/BlockLists/Extensions.txt"
 
-
+        # StatusMessages filter
         while IFS= read -r Filter || [[ -n $Filter ]]; do
-            if [[ ! -z "$StatusMessegesRaw" ]]
-            then
-                StatusMessegesLines=$(echo $StatusMessegesRaw | jq '.[\"title\"]';echo $StatusMessegesRaw | jq '.messages[]' )
-                while IFS= read -r line || [[ -n $line ]]; do
-                    check=$(echo -e "   $line" | grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
-                    if [[ $check -eq 1 ]]
-                    then
-                        [[ ! $quiet -eq 1 ]] && echo "  │  [match] Status message filter matched: '$Filter'"
-                        found=1
-                        blacklist=1
-                        continue
-                    fi
-                done < <(printf '%s' "$StatusMessegesLines")
+            [[ -z "$Filter" ]] && continue
+            if [[ ! -z "$StatusMessegesRaw" ]]; then
+                while IFS= read -r msgobj; do
+                    StatusMessegesLines=$(echo "$msgobj" | jq -r '.title, (.messages[]? // empty)')
+                    while IFS= read -r line || [[ -n $line ]]; do
+                        if echo "$line" | grep -qi "$Filter"; then
+                            [[ ! $quiet -eq 1 ]] && echo "  │  [match] Status message filter matched: '$Filter'"
+                            found=1; blacklist=1
+                        fi
+                    done < <(printf '%s\n' "$StatusMessegesLines")
+                done < <(printf '%s\n' "$StatusMessegesRaw")
             fi
             [[ $found -eq 1 ]] && continue
         done <"$DataDir/BlockLists/StatusMesseges.txt"
 
-
+        # ErrorMessages filter
         while IFS= read -r Filter || [[ -n $Filter ]]; do
-            if [[ ! -z "$errorMessage" ]]
-            then
-                check=$(echo -e "   $errorMessage" | grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
-                if [[ $check -eq 1 ]]
-                then
+            [[ -z "$Filter" ]] && continue
+            if [[ ! -z "$errorMessage" ]]; then
+                if echo "$errorMessage" | grep -qi "$Filter"; then
                     [[ ! $quiet -eq 1 ]] && echo "  │  [match] Error message filter matched: '$Filter'"
-                    found=1
-                    blacklist=1
+                    found=1; blacklist=1
                 fi
             fi
             [[ $found -eq 1 ]] && continue
         done <"$DataDir/BlockLists/ErrorMesseges.txt"
 
-
+        # Statuses filter
         while IFS= read -r Filter || [[ -n $Filter ]]; do
-            if [[ ! -z "$status" ]]
-            then
-                check=$(echo -e "   $status" | grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
-                if [[ $check -eq 1 ]]
-                then
+            [[ -z "$Filter" ]] && continue
+            if [[ ! -z "$status" ]]; then
+                if echo "$status" | grep -qi "$Filter"; then
                     [[ ! $quiet -eq 1 ]] && echo "  │  [match] Status filter matched: '$Filter'"
-                    found=1
-                    blacklist=1
+                    found=1; blacklist=1
                 fi
             fi
             [[ $found -eq 1 ]] && continue
         done <"$DataDir/BlockLists/Statuses.txt"
 
-
+        # States filter
         while IFS= read -r Filter || [[ -n $Filter ]]; do
-            if [[ ! -z "$status" ]]
-            then
-                check=$(echo -e "   $trackedDownloadState" | grep -i "$Filter" >/dev/null 2>&1 && echo 1 || echo 0)
-                if [[ $check -eq 1 ]]
-                then
+            [[ -z "$Filter" ]] && continue
+            if [[ ! -z "$trackedDownloadState" ]]; then
+                if echo "$trackedDownloadState" | grep -qi "$Filter"; then
                     [[ ! $quiet -eq 1 ]] && echo "  │  [match] State filter matched: '$Filter'"
-                    found=1
-                    blacklist=1
+                    found=1; blacklist=1
                 fi
             fi
             [[ $found -eq 1 ]] && continue
@@ -255,6 +214,7 @@ $SonarrHost/api/v3/queue?page=1\
             [[ ! $quiet -eq 1 ]] && echo "  └─ [ok] No filters matched — leaving alone"
         fi
     done
+
     [[ ! $quiet -eq 1 ]] && echo ""
     [[ ! $quiet -eq 1 ]] && echo "[poll] Done. Sleeping for $(($QueueCheckWaitInMinutes / 60)) minute(s)..."
     sleep $QueueCheckWaitInMinutes
